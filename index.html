@@ -159,6 +159,24 @@
     .info-row { display: flex; justify-content: space-between; font-size: 0.875rem; margin-bottom: 10px; }
     .info-row .key { color: #6b7280; }
     .info-row .val { color: #d1d5db; font-weight: 500; }
+    .linkedin-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(10,102,194,0.16);
+      border: 1px solid rgba(10,102,194,0.35);
+      color: #93c5fd;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .linkedin-link:hover {
+      background: rgba(10,102,194,0.25);
+      border-color: rgba(10,102,194,0.6);
+      color: #dbeafe;
+    }
 
     /* SKILLS */
     #skills { background: #0f172a; }
@@ -269,10 +287,10 @@
   <div class="nav-inner">
     <span class="nav-logo"><span class="accent">KS</span><span class="muted"> · Portfolio</span></span>
     <nav class="nav-links">
-      <button onclick="scrollTo('about')">About</button>
-      <button onclick="scrollTo('skills')">Skills</button>
-      <button onclick="scrollTo('experience')">Experience</button>
-      <button onclick="scrollTo('education')">Education</button>
+      <button onclick="scrollToSection('about')">About</button>
+      <button onclick="scrollToSection('skills')">Skills</button>
+      <button onclick="scrollToSection('experience')">Experience</button>
+      <button onclick="scrollToSection('education')">Education</button>
       <a href="mailto:kaushalsadhu91@gmail.com" class="nav-hire">Hire Me</a>
     </nav>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -281,10 +299,10 @@
     </button>
   </div>
   <div class="mobile-menu" id="mobile-menu">
-    <button onclick="scrollTo('about')">About</button>
-    <button onclick="scrollTo('skills')">Skills</button>
-    <button onclick="scrollTo('experience')">Experience</button>
-    <button onclick="scrollTo('education')">Education</button>
+    <button onclick="scrollToSection('about')">About</button>
+    <button onclick="scrollToSection('skills')">Skills</button>
+    <button onclick="scrollToSection('experience')">Experience</button>
+    <button onclick="scrollToSection('education')">Education</button>
   </div>
 </div>
 
@@ -350,9 +368,9 @@
       <div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-value">10+</div><div class="stat-label">Years Experience</div></div>
-          <div class="stat-card"><div class="stat-value">8+</div><div class="stat-label">Projects Delivered</div></div>
+          <div class="stat-card"><div class="stat-value">80+</div><div class="stat-label">Projects Delivered</div></div>
           <div class="stat-card"><div class="stat-value">15+</div><div class="stat-label">Blockchain Platforms</div></div>
-          <div class="stat-card"><div class="stat-value">20+</div><div class="stat-label">API Integrations</div></div>
+          <div class="stat-card"><div class="stat-value">40+</div><div class="stat-label">API Integrations</div></div>
         </div>
         <div class="info-card">
           <h4>Quick Info</h4>
@@ -360,6 +378,13 @@
           <div class="info-row"><span class="key">Experience</span><span class="val">10+ Years</span></div>
           <div class="info-row"><span class="key">Availability</span><span class="val">Open to Opportunities</span></div>
           <div class="info-row"><span class="key">Languages</span><span class="val">English, Hindi, Gujarati</span></div>
+          <div class="info-row" style="margin-bottom:0">
+            <span class="key">LinkedIn</span>
+            <a class="linkedin-link" href="https://in.linkedin.com/in/kaushalsadhu91?trk=profile-badge" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zm-9.25 6.75H7.5V17h2.25V9.75zM8.63 6.78a1.3 1.3 0 0 0-1.31 1.3c0 .72.58 1.3 1.3 1.3a1.3 1.3 0 1 0 .01-2.6zM17 12.65c0-2.11-1.13-3.1-2.64-3.1-1.22 0-1.77.67-2.08 1.14V9.75H10V17h2.28v-3.6c0-.95.18-1.87 1.36-1.87 1.16 0 1.18 1.09 1.18 1.93V17H17v-4.35z"/></svg>
+              View Profile
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -581,9 +606,18 @@
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  // Smooth scroll
-  function scrollTo(id) {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  // Smooth scroll with fixed navbar offset
+  function scrollToSection(id) {
+    const section = document.getElementById(id);
+    const navHeight = document.getElementById('navbar')?.offsetHeight || 0;
+    if (!section) return;
+
+    const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: Math.max(sectionTop - navHeight - 8, 0),
+      behavior: 'smooth'
+    });
+
     document.getElementById('mobile-menu').classList.remove('open');
     document.getElementById('ham-icon').style.display = 'block';
     document.getElementById('x-icon').style.display = 'none';
